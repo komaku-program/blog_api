@@ -7,5 +7,7 @@ Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
+
+  # ここは後で変更？削除する？
   root 'api/v1/posts#index'
 end

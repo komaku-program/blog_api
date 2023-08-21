@@ -7,7 +7,7 @@ ruby "3.2.2"
 gem "rails", "~> 7.0.7"
 
 # 開発環境(ローカル)ではSQLite3を使用
-gem 'sqlite3', group: :development
+gem 'sqlite3', group: [:development, :test]
 
 # 本番環境(heroku)ではPostgreSQLを使用
 gem 'pg', group: :production

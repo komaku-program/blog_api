@@ -21,8 +21,15 @@ test:
   database: db/test.sqlite3
 
 production:
-  <<: *default
-  adapter: postgresql
-  encoding: unicode
-  pool: 5
-# インデントは必ず半角スペース２つ
+  url: <%= ENV['DATABASE_URL'] %>
+# production:
+#   <<: *default
+#   adapter: postgresql
+#   host: <%= ENV['DATABASE_URL'] %>
+#   port: <%= ENV['DATABASE_URL'] %>
+#   database: <%= ENV['DB_DATABASE'] %>
+#   username: <%= ENV['DB_USERNAME'] %>
+#   password: <%= ENV['DB_PASSWORD'] %>
+#   charset: utf8
+#   schema: public
+#   sslmode: require
