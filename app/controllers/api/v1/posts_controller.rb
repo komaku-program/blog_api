@@ -9,27 +9,29 @@ class Api::V1::PostsController < ApplicationController
     render json: @post
   end
 
+  # create アクションで thumbnailUrl を thumbnail にマッピング
   def create
-    @post = Post.new(post_params)
+    puts 'こんにちは'
+    logger.info 'Create action is called' # 追加
+    logger.info "Received thumbnailUrl: #{params[:thumbnailUrl].inspect}"
 
-    # アップロードされた画像の処理
-    if params[:image].present?
-      uploaded_file = params[:image]
-      sanitized_filename = uploaded_file.original_filename.gsub(/\s+/, '_')
-      temp_file_path = Rails.root.join("tmp/#{sanitized_filename}")
+    @post = Post.new(post_params.except(:thumbnailUrl)) # thumbnailUrl を除いたパラメータで Post を新規作成
 
-      File.open(temp_file_path, 'wb') do |file|
-        file.write(uploaded_file.read)
-      end
-
-      thumbnail_url = generate_thumbnail_url(temp_file_path, sanitized_filename)
-      @post.thumbnail_url = thumbnail_url
-
-      File.delete(temp_file_path)
+    if params[:thumbnailUrl].present? # もし thumbnailUrl が存在していたら
+      @post.thumbnail = params[:thumbnailUrl] # thumbnail にセット
+      logger.info "Thumbnail has been set: #{@post.thumbnail.inspect}"
     end
 
-    if @post.save
+    if @post.save # 保存処理
       render json: @post, status: :created
+    else
+      render json: @post.errors, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    if @post.update(post_params)
+      render json: @post
     else
       render json: @post.errors, status: :unprocessable_entity
     end
