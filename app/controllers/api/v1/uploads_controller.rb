@@ -6,8 +6,6 @@ class Api::V1::UploadsController < ApplicationController
       sanitized_filename = uploaded_file.original_filename.gsub(/\s+/, '_')
       temp_file_path = Rails.root.join('tmp', 'uploads', sanitized_filename)
 
-      puts "temp_file_path: #{temp_file_path}"
-
       File.open(temp_file_path, 'wb') do |file|
         file.write(uploaded_file.read)
       end
@@ -26,7 +24,7 @@ class Api::V1::UploadsController < ApplicationController
 
   def generate_thumbnail_url(temp_file_path, sanitized_filename)
     thumbnail = MiniMagick::Image.open(temp_file_path)
-    thumbnail.resize '100x100'
+    thumbnail.resize '500x500'
 
     thumbnail_dir = Rails.root.join('public/thumbnails')
 
