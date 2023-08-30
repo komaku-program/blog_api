@@ -9,15 +9,14 @@ class Api::V1::PostsController < ApplicationController
     render json: @post
   end
 
-  # create アクションで thumbnailUrl を thumbnail にマッピング
   def create
-    @post = Post.new(post_params.except(:thumbnailUrl)) # thumbnailUrl を除いたパラメータで Post を新規作成
+    @post = Post.new(post_params.except(:thumbnailUrl))
 
-    if params[:thumbnailUrl].present? # もし thumbnailUrl が存在していたら
-      @post.thumbnail = params[:thumbnailUrl] # thumbnail にセット
+    if params[:thumbnailUrl].present?
+      @post.thumbnail = params[:thumbnailUrl]
     end
 
-    if @post.save # 保存処理
+    if @post.save
       render json: @post, status: :created
     else
       render json: @post.errors, status: :unprocessable_entity
