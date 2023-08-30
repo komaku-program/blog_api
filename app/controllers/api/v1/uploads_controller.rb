@@ -18,6 +18,10 @@ class Api::V1::UploadsController < ApplicationController
     else
       render json: { error: 'No image uploaded' }, status: :unprocessable_entity
     end
+  rescue StandardError => e
+    puts "エラー: #{e.message}"
+    puts e.backtrace.inspect
+    render json: { error: 'Internal Server Error' }, status: :internal_server_error
   end
 
   private
