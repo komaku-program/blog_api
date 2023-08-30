@@ -4,7 +4,7 @@ class Api::V1::UploadsController < ApplicationController
 
     if uploaded_file
       sanitized_filename = uploaded_file.original_filename.gsub(/\s+/, '_')
-      temp_file_path = Rails.root.join('tmp', 'uploads', sanitized_filename)
+      temp_file_path = Rails.root.join('tmp', sanitized_filename) # 'tmp/uploads' の代わりに 'tmp' を使用
 
       File.open(temp_file_path, 'wb') do |file|
         file.write(uploaded_file.read)
