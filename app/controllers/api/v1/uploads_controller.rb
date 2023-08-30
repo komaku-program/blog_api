@@ -4,7 +4,7 @@ class Api::V1::UploadsController < ApplicationController
 
     if uploaded_file
       sanitized_filename = uploaded_file.original_filename.gsub(/\s+/, '_')
-      temp_file_path = Rails.root.join('tmp', 'uploads', sanitized_filename)
+      temp_file_path = Rails.root.join('tmp', sanitized_filename)
 
       File.open(temp_file_path, 'wb') do |file|
         file.write(uploaded_file.read)
@@ -18,6 +18,10 @@ class Api::V1::UploadsController < ApplicationController
     else
       render json: { error: 'No image uploaded' }, status: :unprocessable_entity
     end
+  rescue StandardError => e
+    puts "エラー: #{e.message}"
+    puts e.backtrace.inspect
+    render json: { error: 'Internal Server Error' }, status: :internal_server_error
   end
 
   private
