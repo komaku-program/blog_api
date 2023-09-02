@@ -22,7 +22,11 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def update
-    if @post.update(post_params)
+    @post = Post.find(params[:id])
+    # thumbnailを更新する（もしそのデータが送られてきたら）
+    @post.thumbnail = params[:thumbnailUrl] if params[:thumbnailUrl].present?
+
+    if @post.update(post_params.except(:thumbnailUrl))
       render json: @post
     else
       render json: @post.errors, status: :unprocessable_entity
