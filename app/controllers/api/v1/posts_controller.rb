@@ -10,7 +10,7 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def create
-    @post = Post.new(post_params.except(:thumbnailUrl))
+    @post = current_user.posts.new(post_params.except(:thumbnailUrl))
 
     @post.thumbnail = params[:thumbnailUrl] if params[:thumbnailUrl].present?
 
