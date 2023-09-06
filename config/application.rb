@@ -24,5 +24,11 @@ module BlogApi
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
     config.uploaded_files_temp_path = Rails.root.join('tmp', 'uploads')
+    # 追加
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use ActionDispatch::Session::CookieStore
+    config.middleware.use Warden::Manager do |manager|
+      manager.default_strategies(scope: :user).unshift :your_custom_strategy
+    end
   end
 end
