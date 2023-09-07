@@ -2,11 +2,6 @@ class Users::SessionsController < Devise::SessionsController
   respond_to :json
 
   def create
-    Rails.logger.debug '=== HTTP Headers Start ==='
-    request.headers.each do |key, value|
-      Rails.logger.debug "#{key}: #{value}"
-    end
-    Rails.logger.debug '=== HTTP Headers End ==='
     super do |_user|
       if user_signed_in?
         render json: { message: 'ログイン成功', user: current_user } and return

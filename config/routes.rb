@@ -19,6 +19,6 @@ Rails.application.routes.draw do
     end
   end
 
-  # ここは後で削除する？
+  # ここは後で削除
   root 'api/v1/posts#index'
 end
