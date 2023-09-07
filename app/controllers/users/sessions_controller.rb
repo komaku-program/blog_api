@@ -21,19 +21,10 @@ class Users::SessionsController < Devise::SessionsController
   end
 
   def check_login
-    Rails.logger.debug '=== Debugging check_login ==='
-    Rails.logger.debug "Request Headers: #{request.headers.inspect}"
-    Rails.logger.debug "Current User: #{current_user.inspect}"
-    Rails.logger.debug "User Signed In?: #{user_signed_in?}"
-    Rails.logger.debug '=== HTTP Headers Start ==='
-    request.headers.each do |key, value|
-      Rails.logger.debug "#{key}: #{value}"
-    end
-    Rails.logger.debug '=== HTTP Headers End ==='
     if user_signed_in?
-      render json: { loggedIn: true, user: current_user }
+      render json: { loggedIn: true, user: current_user, userId: current_user.id }
     else
-      render json: { loggedIn: false } # ここを変更
+      render json: { loggedIn: false }
     end
   end
 

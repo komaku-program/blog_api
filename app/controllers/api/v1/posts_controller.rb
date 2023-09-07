@@ -10,7 +10,13 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def create
-    @post = current_user.posts.new(post_params.except(:thumbnailUrl))
+    # ここの問題は後日取り組む
+    # if current_user.nil?
+    #   render json: { error: 'current_user is nil' }, status: :unauthorized
+    #   return
+    # end
+
+    @post = Post.new(post_params.except(:thumbnailUrl))
 
     @post.thumbnail = params[:thumbnailUrl] if params[:thumbnailUrl].present?
 
@@ -56,6 +62,6 @@ class Api::V1::PostsController < ApplicationController
   private
 
   def post_params
-    params.require(:post).permit(:title, :content, :thumbnailUrl)
+    params.require(:post).permit(:title, :content, :thumbnailUrl, :user_id)
   end
 end
