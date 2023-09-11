@@ -3,7 +3,7 @@ class Api::V1::UploadsController < ApplicationController
     uploaded_file = params[:image]
 
     if uploaded_file
-      sanitized_filename = uploaded_file.original_filename.gsub(/\s+/, '_')
+      sanitized_filename = sanitize_filename(uploaded_file.original_filename)
       temp_file_path = Rails.root.join('tmp', sanitized_filename)
 
       File.open(temp_file_path, 'wb') do |file|
@@ -25,6 +25,13 @@ class Api::V1::UploadsController < ApplicationController
   end
 
   private
+
+  def sanitize_filename(filename)
+    sanitized = filename.gsub(/\s+/, '_')
+    raise 'Invalid filename' if sanitized.include?('..') || sanitized.include?('/') || sanitized.include?('\\')
+
+    sanitized
+  end
 
   def generate_thumbnail_url(temp_file_path, sanitized_filename)
     thumbnail = MiniMagick::Image.open(temp_file_path)
